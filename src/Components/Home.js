@@ -5,6 +5,7 @@ import SideMenu from "./SideMenu"
 import AddNoteInput from "./AddNoteInput"
 import Notes from "./Notes"
 import fireDb from "../firebase"
+import Masonry from "react-masonry-css"
 
 function Home() {
   const [data, setData] = useState({})
@@ -24,6 +25,14 @@ function Home() {
     }
   }, [])
 
+  const breakpointColumnsObj = {
+    default: 3,
+    1100: 3,
+    970: 2,
+    800: 1,
+    500: 1,
+  }
+
   return (
     <>
       <div className="home">
@@ -35,8 +44,17 @@ function Home() {
           {/* MAIN SECTION */}
           <div className="home__mainSection">
             <AddNoteInput />
-
-            <Notes data={data} />
+            <div className="home__notes">
+              <Masonry
+                breakpointCols={breakpointColumnsObj}
+                className="my-masonry-grid"
+                columnClassName="my-masonry-grid_column"
+              >
+                {Object.keys(data).map((id) => {
+                  return <Notes data={data} id={id} />
+                })}
+              </Masonry>
+            </div>
           </div>
         </div>
       </div>

@@ -10,8 +10,6 @@ import Masonry from "react-masonry-css"
 function Home() {
   const [data, setData] = useState({})
 
-  const { id } = useParams()
-
   useEffect(() => {
     fireDb.child("notes").on("value", (snapshot) => {
       if (snapshot.val() !== null) {

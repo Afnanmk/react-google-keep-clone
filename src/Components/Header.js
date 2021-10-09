@@ -1,8 +1,8 @@
 import React from "react"
 import logo from "../logo-3.png"
 import "./Header.css"
-import ReplayIcon from "@material-ui/icons/Replay"
-import ViewStreamOutlinedIcon from "@material-ui/icons/ViewStreamOutlined"
+import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined"
+import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined"
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined"
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined"
 import Tooltip from "@mui/material/Tooltip"
@@ -34,12 +34,15 @@ function Header() {
         <div className="header__right">
           <Tooltip title="Refresh">
             <button className="icon__button">
-              <ReplayIcon className="header__icon" style={{ fontSize: 29 }} />
+              <RefreshOutlinedIcon
+                className="header__icon"
+                style={{ fontSize: 29 }}
+              />
             </button>
           </Tooltip>
           <Tooltip title="List View">
             <button className="icon__button">
-              <ViewStreamOutlinedIcon
+              <ViewAgendaOutlinedIcon
                 className="header__icon"
                 style={{ fontSize: 29 }}
               />

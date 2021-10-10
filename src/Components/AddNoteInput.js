@@ -1,44 +1,18 @@
 import React from "react"
-import { useState } from "react"
+import { useState, useEffect, useParams } from "react"
 import fireDb from "../firebase"
 import { toast } from "react-toastify"
 
-function AddNoteInput() {
-  const [input, setInput] = useState({
-    title: "",
-    takeNote: "",
-  })
-
+function AddNoteInput({ input, setInput, onSubmit }) {
   const handleChange = (e) => {
     const { name, value } = e.target
 
     setInput({ ...input, [name]: value })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    if (input.title || input.takeNote) {
-      fireDb.child("notes").push(input, (err) => {
-        if (err) {
-          toast.error(err)
-        } else {
-          toast.success("Note Added Successfully")
-        }
-      })
-    } else {
-      toast.error("Please provide value in each input field")
-    }
-
-    setInput({
-      title: "",
-      takeNote: "",
-    })
-  }
-
   return (
     <div className="home__noteInputs">
-      <form action="" className="home__form" onSubmit={handleSubmit}>
+      <form action="" className="home__form" onSubmit={onSubmit}>
         <input
           type="text"
           placeholder="Title"

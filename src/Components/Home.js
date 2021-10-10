@@ -6,9 +6,14 @@ import AddNoteInput from "./AddNoteInput"
 import Notes from "./Notes"
 import fireDb from "../firebase"
 import Masonry from "react-masonry-css"
+import { toast } from "react-toastify"
 
 function Home() {
   const [data, setData] = useState({})
+  const [input, setInput] = useState({
+    title: "",
+    takeNote: "",
+  })
 
   useEffect(() => {
     fireDb.child("notes").on("value", (snapshot) => {
@@ -22,6 +27,27 @@ function Home() {
       setData({})
     }
   }, [])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    if (input.title || input.takeNote) {
+      fireDb.child("notes").push(input, (err) => {
+        if (err) {
+          toast.error(err)
+        } else {
+          toast.success("Note Added Successfully")
+        }
+      })
+    } else {
+      toast.error("Please provide value in each input field")
+    }
+
+    setInput({
+      title: "",
+      takeNote: "",
+    })
+  }
 
   const breakpointColumnsObj = {
     default: 3,
@@ -41,7 +67,11 @@ function Home() {
           </div>
           {/* MAIN SECTION */}
           <div className="home__mainSection">
-            <AddNoteInput />
+            <AddNoteInput
+              input={input}
+              setInput={setInput}
+              onSubmit={handleSubmit}
+            />
             <div className="home__notes">
               <Masonry
                 breakpointCols={breakpointColumnsObj}

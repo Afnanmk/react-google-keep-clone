@@ -60,7 +60,7 @@ function Home() {
   return (
     <>
       <div className="home">
-        <div className="container home__container">
+        <div className="home__container">
           {/* SIDE MENU */}
           <div className="home__sideMenu">
             <SideMenu />

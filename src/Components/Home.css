@@ -11,6 +11,9 @@
 }
 .home__sideMenu {
   width: 22%;
+  max-width: 400px;
+  width: 110%;
+  min-width: 200px;
 }
 .sideMenu_item {
   display: flex;
@@ -20,6 +23,7 @@
   font-size: 1rem;
   font-weight: 500;
   padding: 0.8rem 0;
+  padding-left: 2.6rem;
   /* padding-right: 2rem; */
   width: 100%;
 }

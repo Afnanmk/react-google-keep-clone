@@ -2,13 +2,13 @@ import firebase from "firebase/compat/app"
 import "firebase/compat/database"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA-a1gG7U-81GrlEOkG36n5g4QGyYjCMJQ",
-  authDomain: "keep-notes-da518.firebaseapp.com",
-  projectId: "keep-notes-da518",
-  storageBucket: "keep-notes-da518.appspot.com",
-  messagingSenderId: "545011581003",
-  appId: "1:545011581003:web:7306cb38e4743e3b048dce",
+  apiKey: "AIzaSyCKxanqqVZEz77b7W1f_XK9qfCg0WPnYnQ",
+  authDomain: "keep-note-2.firebaseapp.com",
+  projectId: "keep-note-2",
+  storageBucket: "keep-note-2.appspot.com",
+  messagingSenderId: "364715492570",
+  appId: "1:364715492570:web:9eb98314277f7ab2ce51e3",
 }
 
 const fireDb = firebase.initializeApp(firebaseConfig)
-export default fireDb.database().ref()
+export default fireDb

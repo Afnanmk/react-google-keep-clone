@@ -3,13 +3,14 @@ import { useState, useEffect, useParams } from "react"
 import fireDb from "../firebase"
 import { toast } from "react-toastify"
 
-function AddNoteInput({ input, setInput, onSubmit }) {
-  const handleChange = (e) => {
-    const { name, value } = e.target
-
-    setInput({ ...input, [name]: value })
-  }
-
+function AddNoteInput({
+  title,
+  setTitle,
+  takeNote,
+  setTakeNote,
+  onSubmit,
+  handleChange,
+}) {
   return (
     <div className="home__noteInputs">
       <form action="" className="home__form" onSubmit={onSubmit}>
@@ -19,8 +20,8 @@ function AddNoteInput({ input, setInput, onSubmit }) {
           name="title"
           id="title"
           className="home__form-title"
-          value={input.title}
-          onChange={handleChange}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
           name="takeNote"
@@ -29,8 +30,8 @@ function AddNoteInput({ input, setInput, onSubmit }) {
           rows="0"
           placeholder="Take a note..."
           className="home__form-textarea"
-          value={input.takeNote}
-          onChange={handleChange}
+          value={takeNote}
+          onChange={(e) => setTakeNote(e.target.value)}
         ></textarea>
         <button
           aria-label="button"

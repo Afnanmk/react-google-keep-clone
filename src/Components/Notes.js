@@ -7,43 +7,29 @@ import fireDb from "../firebase"
 import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
 
-function Notes({ data, id }) {
-  const handleDelete = (id) => {
-    fireDb.child(`notes/${id}`).remove((err) => {
-      if (err) {
-        toast.error(err)
-      } else {
-        toast.success("Note Deleted Successfully")
-      }
-    })
-  }
-
-  const handleView = (params) => {}
+function Notes({ note, popupTrigger, setPopupTrigger, popupOnClick }) {
+  const handleDelete = (id) => {}
 
   return (
-    <div className="noteCard card" key={id}>
-      <h3 className="noteCard__title">{data[id].title}</h3>
-      <p className="noteCard__description">{data[id].takeNote}</p>
+    <div className="noteCard card">
+      <h3 className="noteCard__title">{note.title}</h3>
+      <p className="noteCard__description">{note.takeNote}</p>
       <div className="noteCard__icons">
-        <Link to={`/update/${id}`}>
+        <Link to="/">
           <Tooltip title="Edit">
             <button className="homeCard__btn">
-              <EditOutlinedIcon className="homeCard__icon" />
+              <EditOutlinedIcon
+                className="homeCard__icon"
+                onClick={() => popupOnClick()}
+              />
             </button>
           </Tooltip>
         </Link>
         <Tooltip title="Delete">
-          <button className="homeCard__btn" onClick={() => handleDelete(id)}>
+          <button className="homeCard__btn" onClick={() => handleDelete}>
             <DeleteOutlineOutlinedIcon className="homeCard__icon" />
           </button>
         </Tooltip>
-        <Link>
-          <Tooltip title="View Note">
-            <button className="homeCard__btn" onClick={() => handleView(id)}>
-              View
-            </button>
-          </Tooltip>
-        </Link>
       </div>
     </div>
   )

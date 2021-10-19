@@ -7,46 +7,48 @@ import Notes from "./Notes"
 import fireDb from "../firebase"
 import Masonry from "react-masonry-css"
 import { toast } from "react-toastify"
+import Header from "./Header"
+import Popup from "./Popup"
 
 function Home() {
-  const [data, setData] = useState({})
-  const [input, setInput] = useState({
-    title: "",
-    takeNote: "",
-  })
+  const [noteList, setNoteList] = useState([])
+  const [title, setTitle] = useState("")
+  const [takeNote, setTakeNote] = useState("")
+  const [popupTrigger, setPopupTrigger] = useState(false)
 
   useEffect(() => {
-    fireDb.child("notes").on("value", (snapshot) => {
-      if (snapshot.val() !== null) {
-        setData({ ...snapshot.val() })
-      } else {
-        setData({})
+    const todoRef = fireDb.database().ref("Notes")
+    todoRef.on("value", (snapshot) => {
+      const notes = snapshot.val()
+      const noteList = []
+      for (let id in notes) {
+        noteList.push({ id, ...notes[id] })
       }
+      setNoteList(noteList)
+      console.log(noteList)
     })
-    return () => {
-      setData({})
-    }
   }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (input.title || input.takeNote) {
-      fireDb.child("notes").push(input, (err) => {
-        if (err) {
-          toast.error(err)
-        } else {
-          toast.success("Note Added Successfully")
-        }
-      })
-    } else {
-      toast.error("Please provide value in each input field")
+    const todoRef = fireDb.database().ref("Notes")
+    const notes = {
+      title,
+      takeNote,
     }
+    todoRef.push(notes)
 
-    setInput({
-      title: "",
-      takeNote: "",
-    })
+    setTitle("")
+    setTakeNote("")
+  }
+
+  const popupOnClick = (params) => {
+    setPopupTrigger(true)
+  }
+
+  const updateNote = (params) => {
+    setPopupTrigger(false)
   }
 
   const breakpointColumnsObj = {
@@ -59,6 +61,13 @@ function Home() {
 
   return (
     <>
+      <Popup
+        trigger={popupTrigger}
+        setPopupTrigger={setPopupTrigger}
+        popupOnClick={popupOnClick}
+        updateNote={updateNote}
+      />
+      <Header />
       <div className="home">
         <div className="home__container">
           {/* SIDE MENU */}
@@ -68,8 +77,10 @@ function Home() {
           {/* MAIN SECTION */}
           <div className="home__mainSection">
             <AddNoteInput
-              input={input}
-              setInput={setInput}
+              title={title}
+              setTitle={setTitle}
+              takeNote={takeNote}
+              setTakeNote={setTakeNote}
               onSubmit={handleSubmit}
             />
             <div className="home__notes">
@@ -78,9 +89,15 @@ function Home() {
                 className="my-masonry-grid"
                 columnClassName="my-masonry-grid_column"
               >
-                {Object.keys(data).map((id) => {
-                  return <Notes data={data} id={id} />
-                })}
+                {noteList
+                  ? noteList.map((note) => (
+                      <Notes
+                        note={note}
+                        setPopupTrigger={setPopupTrigger}
+                        popupOnClick={popupOnClick}
+                      />
+                    ))
+                  : ""}
               </Masonry>
             </div>
           </div>

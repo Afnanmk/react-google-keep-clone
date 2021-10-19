@@ -1,7 +1,6 @@
 import React from "react"
-import { useState, useEffect, useParams } from "react"
-import fireDb from "../firebase"
 import { toast } from "react-toastify"
+import { useState } from "react"
 
 function AddNoteInput({
   title,
@@ -9,20 +8,28 @@ function AddNoteInput({
   takeNote,
   setTakeNote,
   onSubmit,
-  handleChange,
+  expand,
+  setExpand,
 }) {
+  const handleExpand = () => {
+    setExpand(true)
+  }
+
   return (
     <div className="home__noteInputs">
       <form action="" className="home__form" onSubmit={onSubmit}>
-        <input
-          type="text"
-          placeholder="Title"
-          name="title"
-          id="title"
-          className="home__form-title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        {expand ? (
+          <input
+            type="text"
+            placeholder="Title"
+            name="title"
+            id="title"
+            className="home__form-title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        ) : null}
+
         <textarea
           name="takeNote"
           id=""
@@ -32,14 +39,19 @@ function AddNoteInput({
           className="home__form-textarea"
           value={takeNote}
           onChange={(e) => setTakeNote(e.target.value)}
+          onClick={handleExpand}
         ></textarea>
-        <button
-          aria-label="button"
-          type="submit"
-          className="home__form-closeBtn"
-        >
-          Close
-        </button>
+        {expand ? (
+          <button
+            aria-label="button"
+            type="submit"
+            className="home__form-closeBtn"
+          >
+            Close
+          </button>
+        ) : (
+          ""
+        )}
       </form>
     </div>
   )

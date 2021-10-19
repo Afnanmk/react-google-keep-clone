@@ -15,6 +15,10 @@ function Home() {
   const [title, setTitle] = useState("")
   const [takeNote, setTakeNote] = useState("")
   const [popupTrigger, setPopupTrigger] = useState(false)
+  const [editedTitle, setEditedTitle] = useState("")
+  const [editedTakeNote, setEditedTakeNote] = useState("")
+  const [noteId, setNoteId] = useState("")
+  const [expand, setExpand] = useState(false)
 
   useEffect(() => {
     const todoRef = fireDb.database().ref("Notes")
@@ -37,17 +41,29 @@ function Home() {
       title,
       takeNote,
     }
-    todoRef.push(notes)
-
+    if (title.length && takeNote.length) {
+      todoRef.push(notes)
+      setExpand(false)
+    } else {
+      setExpand(false)
+    }
     setTitle("")
     setTakeNote("")
   }
 
-  const popupOnClick = (params) => {
+  const popupOnClick = (note) => {
+    setEditedTitle(note.title)
+    setEditedTakeNote(note.takeNote)
+    setNoteId(note.id)
     setPopupTrigger(true)
   }
 
-  const updateNote = (params) => {
+  const updateNote = () => {
+    const todoRef = fireDb.database().ref("Notes").child(noteId)
+    todoRef.update({
+      title: editedTitle,
+      takeNote: editedTakeNote,
+    })
     setPopupTrigger(false)
   }
 
@@ -66,6 +82,10 @@ function Home() {
         setPopupTrigger={setPopupTrigger}
         popupOnClick={popupOnClick}
         updateNote={updateNote}
+        editedTitle={editedTitle}
+        editedTakeNote={editedTakeNote}
+        setEditedTitle={setEditedTitle}
+        setEditedTakeNote={setEditedTakeNote}
       />
       <Header />
       <div className="home">
@@ -82,6 +102,8 @@ function Home() {
               takeNote={takeNote}
               setTakeNote={setTakeNote}
               onSubmit={handleSubmit}
+              expand={expand}
+              setExpand={setExpand}
             />
             <div className="home__notes">
               <Masonry
@@ -95,6 +117,8 @@ function Home() {
                         note={note}
                         setPopupTrigger={setPopupTrigger}
                         popupOnClick={popupOnClick}
+                        title={title}
+                        takeNote={takeNote}
                       />
                     ))
                   : ""}

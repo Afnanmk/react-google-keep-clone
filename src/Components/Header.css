@@ -1,12 +1,13 @@
 :root {
   --header-icons-color: rgb(97, 96, 96);
 }
+
 .header {
-  padding: 0.5rem 0;
+  padding-top: 0.5rem;
   position: fixed;
   width: 100%;
   z-index: 1;
-  background-color: white;
+  background-color: var(--background);
 }
 .header__container {
   display: flex;
@@ -34,7 +35,7 @@
 }
 .header__searchInput {
   border: none;
-  background-color: rgb(236, 236, 239);
+  background-color: var(--searchBarColor);
   width: 70%;
   height: 50px;
   border-top-right-radius: 8px;
@@ -44,14 +45,16 @@
   font-size: 1rem;
   outline: none;
 }
-
+.header__searchInput::placeholder {
+  color: var(--header-icons-color);
+}
 .search__button {
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-left: 1rem;
-  background-color: rgb(236, 236, 239);
+  background-color: var(--searchBarColor);
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   outline: none;
@@ -69,11 +72,11 @@
 }
 .icon__button:hover,
 .icon__button:focus {
-  background-color: rgb(236, 236, 239);
+  background-color: var(--HeaderIconBtnBg);
   border-radius: 50%;
 }
 .icon__button:hover .header__icon {
-  color: black;
+  color: var(--HeaderIcon);
 }
 .icon__button + .icon__button {
   margin-left: 0rem;
@@ -85,4 +88,23 @@
 .border {
   border-bottom: 2px solid rgb(218, 218, 218);
   padding-top: 0.5rem;
+}
+.theme-dark {
+  background: var(--darkBackground);
+  --searchBarColor: rgb(92, 91, 91);
+  --HeaderIconBtnBg: rgb(54, 54, 54);
+  --HeaderIcon: var(--offWhite);
+}
+.search__button--mobile {
+  display: none;
+}
+@media only screen and (max-width: 768px) {
+  .header__center {
+    display: none;
+  }
+  .search__button--mobile {
+    display: inline-block;
+    background: none;
+    border: none;
+  }
 }

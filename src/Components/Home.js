@@ -1,6 +1,6 @@
 import React from "react"
 import "./Home.css"
-import { useState, useEffect, useParams } from "react"
+import { useState, useEffect } from "react"
 import SideMenu from "./SideMenu"
 import AddNoteInput from "./AddNoteInput"
 import Notes from "./Notes"
@@ -19,6 +19,9 @@ function Home() {
   const [editedTakeNote, setEditedTakeNote] = useState("")
   const [noteId, setNoteId] = useState("")
   const [expand, setExpand] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [theme, setTheme] = useState(false)
+  const [listView, setListView] = useState(false)
 
   useEffect(() => {
     const todoRef = fireDb.database().ref("Notes")
@@ -41,7 +44,7 @@ function Home() {
       title,
       takeNote,
     }
-    if (title.length && takeNote.length) {
+    if (title.length || takeNote.length) {
       todoRef.push(notes)
       setExpand(false)
     } else {
@@ -74,9 +77,11 @@ function Home() {
     800: 1,
     500: 1,
   }
-
+  const breakpointListView = {
+    default: 1,
+  }
   return (
-    <>
+    <div className={theme ? "theme-dark" : "main"}>
       <Popup
         trigger={popupTrigger}
         setPopupTrigger={setPopupTrigger}
@@ -86,8 +91,16 @@ function Home() {
         editedTakeNote={editedTakeNote}
         setEditedTitle={setEditedTitle}
         setEditedTakeNote={setEditedTakeNote}
+        theme={theme}
       />
-      <Header />
+      <Header
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        theme={theme}
+        setTheme={setTheme}
+        listView={listView}
+        setListView={setListView}
+      />
       <div className="home">
         <div className="home__container">
           {/* SIDE MENU */}
@@ -107,27 +120,44 @@ function Home() {
             />
             <div className="home__notes">
               <Masonry
-                breakpointCols={breakpointColumnsObj}
+                breakpointCols={
+                  listView ? breakpointListView : breakpointColumnsObj
+                }
                 className="my-masonry-grid"
                 columnClassName="my-masonry-grid_column"
               >
                 {noteList
-                  ? noteList.map((note) => (
-                      <Notes
-                        note={note}
-                        setPopupTrigger={setPopupTrigger}
-                        popupOnClick={popupOnClick}
-                        title={title}
-                        takeNote={takeNote}
-                      />
-                    ))
+                  ? noteList
+                      .filter((note) => {
+                        if (searchTerm === "") {
+                          return note
+                        } else if (
+                          note.title
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase()) ||
+                          note.takeNote
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                        ) {
+                          return note
+                        }
+                      })
+                      .map((note) => (
+                        <Notes
+                          note={note}
+                          setPopupTrigger={setPopupTrigger}
+                          popupOnClick={popupOnClick}
+                          title={title}
+                          takeNote={takeNote}
+                        />
+                      ))
                   : ""}
               </Masonry>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

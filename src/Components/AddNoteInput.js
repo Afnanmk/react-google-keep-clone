@@ -1,6 +1,5 @@
 import React from "react"
 import { toast } from "react-toastify"
-import { useState } from "react"
 
 function AddNoteInput({
   title,

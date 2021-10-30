@@ -3,21 +3,31 @@ import logo from "../logo-3.png"
 import "./Header.css"
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined"
 import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined"
-import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined"
+import GridViewIcon from "@mui/icons-material/GridView"
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined"
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined"
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined"
 import Tooltip from "@mui/material/Tooltip"
+import { Link } from "react-router-dom"
 
-function Header() {
+function Header({
+  searchTerm,
+  setSearchTerm,
+  theme,
+  setTheme,
+  listView,
+  setListView,
+}) {
   return (
-    <div className="header">
+    <div className={theme ? "header theme-dark" : "header"}>
       <div className="container header__container">
         <div className="header__left">
-          <a href="#">
+          <Link to="/">
             <img src={logo} alt="logo" className="logo-img" width="40px" />
-          </a>
-          <a href="#" className="header__title-link">
+          </Link>
+          <Link to="/" className="header__title-link">
             <p className="header__title">Keep Notes</p>
-          </a>
+          </Link>
         </div>
         <div className="header__center">
           <Tooltip title="Search">
@@ -29,31 +39,58 @@ function Header() {
             type="search"
             className="header__searchInput"
             placeholder="Search"
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="header__right">
+          <button className="search__button--mobile">
+            <SearchOutlinedIcon
+              className="search__icon"
+              style={{ fontSize: 29 }}
+            />
+          </button>
           <Tooltip title="Refresh">
-            <button className="icon__button">
+            <button
+              className="icon__button"
+              onClick={() => window.location.reload(false)}
+            >
               <RefreshOutlinedIcon
                 className="header__icon"
                 style={{ fontSize: 29 }}
               />
             </button>
           </Tooltip>
-          <Tooltip title="List View">
-            <button className="icon__button">
-              <ViewAgendaOutlinedIcon
-                className="header__icon"
-                style={{ fontSize: 29 }}
-              />
+          <Tooltip title={listView ? "Grid View" : "List View"}>
+            <button
+              className="icon__button"
+              onClick={() => setListView(!listView)}
+            >
+              {listView ? (
+                <GridViewIcon
+                  className="header__icon"
+                  style={{ fontSize: 29 }}
+                />
+              ) : (
+                <ViewAgendaOutlinedIcon
+                  className="header__icon"
+                  style={{ fontSize: 29 }}
+                />
+              )}
             </button>
           </Tooltip>
-          <Tooltip title="Settings">
-            <button className="icon__button">
-              <SettingsOutlinedIcon
-                className="header__icon"
-                style={{ fontSize: 29 }}
-              />
+          <Tooltip title={theme ? "Light Mode" : "Dark Mode"}>
+            <button className="icon__button" onClick={() => setTheme(!theme)}>
+              {theme ? (
+                <LightModeOutlinedIcon
+                  className="header__icon"
+                  style={{ fontSize: 29 }}
+                />
+              ) : (
+                <DarkModeOutlinedIcon
+                  className="header__icon"
+                  style={{ fontSize: 29 }}
+                />
+              )}
             </button>
           </Tooltip>
         </div>

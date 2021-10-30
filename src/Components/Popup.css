@@ -27,6 +27,7 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
   padding: 1rem;
+  border: 1px solid rgb(175, 173, 173);
 }
 .popup__form-title,
 .popup__form-textarea,
@@ -56,4 +57,8 @@
 .popup__form-textarea {
   outline: none;
   font-family: "Roboto", sans-serif;
+  background-color: var(--background);
+}
+.theme-dark {
+  background-color: var(--darkBackground);
 }

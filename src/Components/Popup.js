@@ -8,17 +8,20 @@ function Popup({
   editedTakeNote,
   setEditedTitle,
   setEditedTakeNote,
+  theme,
 }) {
   return trigger ? (
     <div className="popup">
-      <div className="popup-inner">
+      <div className={theme ? "popup-inner theme-dark" : "popup-inner"}>
         <form action="" className="popup__form">
           <input
             type="text"
             placeholder=""
             name="title"
             id="title"
-            className="popup__form-title"
+            className={
+              theme ? "popup__form-title theme-dark" : "popup__form-title"
+            }
             value={editedTitle}
             onChange={(e) => setEditedTitle(e.target.value)}
           />
@@ -28,7 +31,9 @@ function Popup({
             cols="0"
             rows="0"
             placeholder=""
-            className="popup__form-textarea"
+            className={
+              theme ? "popup__form-textarea theme-dark" : "popup__form-textarea"
+            }
             value={editedTakeNote}
             onChange={(e) => setEditedTakeNote(e.target.value)}
           ></textarea>
